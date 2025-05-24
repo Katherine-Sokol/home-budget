@@ -2,6 +2,7 @@ package backend.project.user;
 
 import backend.project.exception.UsernameAlreadyExistsException;
 import java.util.Optional;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +20,7 @@ public class UserService implements UserDetailsService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  public User registerUser(UserRequestDTO requestDTO) {
+  public User createUser(UserRequestDTO requestDTO) {
     if (userRepository.findByUsername(requestDTO.getUsername()).isPresent()) {
       throw new UsernameAlreadyExistsException(requestDTO.getUsername());
     }
@@ -37,6 +38,23 @@ public class UserService implements UserDetailsService {
     if (user.isEmpty()) {
       throw new UsernameNotFoundException("There is no such user");
     }
-    return (UserDetails) user.get();
+    return user.get();
+  }
+
+  public User authenticate(String username, String rawPassword) {
+    User user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("Користувача не знайдено"));
+
+    if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
+      throw new RuntimeException("Невірний пароль");
+    }
+
+    return user;
+  }
+
+  public User getCurrentUser() {
+    // Получение имени пользователя из контекста Spring Security
+    var username = SecurityContextHolder.getContext().getAuthentication().getName();
+    return userRepository.findByUsername(username).get();
   }
 }

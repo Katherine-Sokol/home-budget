@@ -21,13 +21,13 @@ function HeaderNav(props) {
       </ScrollLink>
       <Link
         className="me-3 py-2 text-light text-decoration-none"
-        to="/login"
+        to="/api/login"
       >
         Увійти
       </Link>
       <Link
         className="me-3 py-2 text-light text-decoration-none"
-        to="/registrate"
+        to="/api/register"
       >
         Реєстрація
       </Link>

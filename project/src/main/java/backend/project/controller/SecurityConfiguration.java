@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
   private final UserService userService;
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final PasswordEncoderProvider passwordEncoder;
 
   @Bean
@@ -33,10 +35,10 @@ public class SecurityConfiguration {
     return provider;
   }
 
-  @Autowired
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(userService).passwordEncoder(passwordEncoder.passwordEncoder());
-  }
+//  @Autowired
+//  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//    auth.userDetailsService(userService).passwordEncoder(passwordEncoder.passwordEncoder());
+//  }
 
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
@@ -49,45 +51,15 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
+        .cors(Customizer.withDefaults())
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/register", "/login").permitAll()
-            .requestMatchers("/budget").fullyAuthenticated()
+            .requestMatchers("/api/register", "/api/login").permitAll()
+            .requestMatchers("/api/budget").fullyAuthenticated()
             .anyRequest().authenticated()
         )
-        .formLogin(form -> form
-            .loginPage("/login")
-            .defaultSuccessUrl("/budget")
-            .permitAll()
-        )
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .logout(logout -> logout.permitAll())
         .build();
   }
 }
-
-//  @Bean
-//  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-//    AuthenticationManagerBuilder authBuilder =
-//        http.getSharedObject(AuthenticationManagerBuilder.class);
-//    authBuilder.userDetailsService(userService).passwordEncoder(passwordEncoder.passwordEncoder());
-//    return authBuilder.build();
-//  }
-//
-//  @Bean
-//  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//    return http
-//        .csrf(csrf -> csrf.disable())
-//        .authorizeHttpRequests(auth -> auth
-//            .requestMatchers("/register", "/login").permitAll()
-//            .requestMatchers("/budget").fullyAuthenticated()
-//            .anyRequest().authenticated()
-//        )
-//        .formLogin(form -> form
-//            .loginPage("/login")
-//            .defaultSuccessUrl("/budget")
-//            .permitAll()
-//        )
-//        .logout(logout -> logout.permitAll())
-//        .build();
-//  }
-//}

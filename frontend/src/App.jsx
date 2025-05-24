@@ -20,7 +20,7 @@ function App() {
           element={<LoginPage></LoginPage>}
         ></Route>
         <Route
-          path="/registrate"
+          path="/api/register"
           element={<SigninPage></SigninPage>}
         ></Route>
       </Routes>

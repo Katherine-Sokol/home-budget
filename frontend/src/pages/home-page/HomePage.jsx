@@ -21,8 +21,8 @@ function HomePage(props) {
 
       {/* <!-- Call to Action --> */}
       <div className="cta">
-        <a href="/register">Зареєструватися</a>
-        <a href="/login">Увійти</a>
+        <a href="/api/register">Зареєструватися</a>
+        <a href="/api/login">Увійти</a>
       </div>
     </>
   );

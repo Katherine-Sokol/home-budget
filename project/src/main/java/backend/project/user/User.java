@@ -7,14 +7,17 @@ import backend.project.entity.Goal;
 import backend.project.entity.Income;
 import backend.project.entity.IncomeCategory;
 import jakarta.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @Entity
 @Table(name="users")
-public class User {
+public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -46,4 +49,9 @@ public class User {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Debt> debts = new HashSet<>();
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return null;
+  }
 }
