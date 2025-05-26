@@ -3,6 +3,7 @@ package backend.project.mapper;
 import backend.project.dto.IncomeDto;
 import backend.project.entity.Income;
 import backend.project.entity.IncomeCategory;
+import backend.project.request.CreateIncomeRequest;
 import backend.project.user.User;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +21,13 @@ public class IncomeMapper {
     return dto;
   }
 
-  public Income toEntity(IncomeDto dto, User user, IncomeCategory category) {
-    return new Income(
-        user,
-        category,
-        dto.getAmount(),
-        dto.getDescription(),
-        dto.getIncomeDate()
-    );
+  public Income toEntity(CreateIncomeRequest request, User user, IncomeCategory category) {
+    Income income = new Income();
+    income.setUser(user);
+    income.setCategory(category);
+    income.setAmount(request.getAmount());
+    income.setDescription(request.getDescription());
+    income.setIncomeDate(request.getIncomeDate());
+    return income;
   }
 }

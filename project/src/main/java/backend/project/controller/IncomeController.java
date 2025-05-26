@@ -1,9 +1,12 @@
 package backend.project.controller;
 import backend.project.dto.IncomeDto;
+import backend.project.request.CreateIncomeRequest;
 import backend.project.service.IncomeService;
 import backend.project.user.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +26,20 @@ public class IncomeController {
   @GetMapping
   public List<IncomeDto> getAllIncomes(@AuthenticationPrincipal User userDetails) {
     return incomeService.getIncomesByUserId(userDetails.getId());
+  }
+
+  @PostMapping
+  public ResponseEntity<IncomeDto> create(@AuthenticationPrincipal User userDetails,
+                                          @RequestBody @Valid CreateIncomeRequest request) {
+    IncomeDto created = incomeService.create(userDetails.getId(), request);
+    return ResponseEntity.ok(created);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> delete(@AuthenticationPrincipal User userDetails,
+                                     @PathVariable Long id) {
+    incomeService.deleteById(id, userDetails.getId());
+    return ResponseEntity.noContent().build();
   }
 
   // 2. Get income amounts by category

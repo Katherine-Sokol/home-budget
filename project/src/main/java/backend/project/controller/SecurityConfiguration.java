@@ -56,6 +56,10 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/register", "/api/login").permitAll()
             .requestMatchers("/api/budget").fullyAuthenticated()
+            .requestMatchers("/api/expense-categories").fullyAuthenticated()
+            .requestMatchers("/api/expenses").fullyAuthenticated()
+            .requestMatchers("/api/income-categories").fullyAuthenticated()
+            .requestMatchers("/api/incomes").fullyAuthenticated()
             .anyRequest().authenticated()
         )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

@@ -1,9 +1,12 @@
 package backend.project.controller;
 import backend.project.dto.ExpenseDto;
+import backend.project.request.CreateExpenseRequest;
 import backend.project.service.ExpenseService;
 import backend.project.user.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,20 @@ public class ExpenseController {
   @GetMapping
   public List<ExpenseDto> getByUserId(@AuthenticationPrincipal User userDetails) {
     return expenseService.getByUserId(userDetails.getId());
+  }
+
+  @PostMapping
+  public ResponseEntity<ExpenseDto> create(@AuthenticationPrincipal User userDetails,
+                                           @RequestBody @Valid CreateExpenseRequest request) {
+    ExpenseDto created = expenseService.create(userDetails.getId(), request);
+    return ResponseEntity.ok(created);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> delete(@AuthenticationPrincipal User userDetails,
+                                     @PathVariable Long id) {
+    expenseService.deleteById(id, userDetails.getId());
+    return ResponseEntity.noContent().build();
   }
 
   @GetMapping("/by-category/{categoryId}")
