@@ -3,9 +3,13 @@ import backend.project.user.User;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "incomes")
 public class Income {
@@ -32,10 +36,6 @@ public class Income {
   @Column(name = "income_date", nullable = false)
   private LocalDate incomeDate;
 
-  // --- Конструктори ---
-
-//  public Income() {}
-
   public Income(User user, IncomeCategory category, BigDecimal amount, String description, LocalDate incomeDate) {
     this.user = user;
     this.category = category;
@@ -43,5 +43,4 @@ public class Income {
     this.description = description;
     this.incomeDate = incomeDate;
   }
-
 }

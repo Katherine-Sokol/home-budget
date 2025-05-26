@@ -26,9 +26,11 @@ public class AuthController {
 
   @PostMapping("/register")
   public UserResponseDTO registerUser(@Valid @RequestBody UserRequestDTO requestDTO) {
-//    return authService.signUp(requestDTO);
-    UserResponseDTO response = authService.signUp(requestDTO);
-    System.out.println("Returning token: " + response.getToken());
-    return response;
+    return authService.signUp(requestDTO);
+  }
+
+  @PostMapping("/login")
+  public UserResponseDTO loginUser(@Valid @RequestBody UserRequestDTO requestDTO) {
+    return authService.signIn(requestDTO);
   }
 }

@@ -7,10 +7,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "goals")
 public class Goal {
@@ -43,8 +47,4 @@ public class Goal {
 
   @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<GoalContribution> contributions = new HashSet<>();
-
-  public Goal() {}
-
-  // Геттери і сеттери
 }

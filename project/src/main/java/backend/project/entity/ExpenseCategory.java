@@ -4,9 +4,13 @@ import backend.project.user.User;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "expense_categories",
     uniqueConstraints = @UniqueConstraint(columnNames = {"name", "user_id"}))
@@ -26,13 +30,9 @@ public class ExpenseCategory {
   @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Expense> expenses = new HashSet<>();
 
-  public ExpenseCategory() {}
-
   public ExpenseCategory(String name, User user) {
     this.name = name;
     this.user = user;
   }
-
-  // Геттери і сеттери
 }
 

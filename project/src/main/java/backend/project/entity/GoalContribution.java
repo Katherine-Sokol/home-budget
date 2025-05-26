@@ -3,9 +3,13 @@ package backend.project.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "goal_contributions")
 public class GoalContribution {
@@ -26,8 +30,4 @@ public class GoalContribution {
 
   @Column(columnDefinition = "TEXT")
   private String note;
-
-  public GoalContribution() {}
-
-  // Геттери і сеттери
 }

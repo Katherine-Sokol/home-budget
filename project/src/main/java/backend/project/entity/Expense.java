@@ -4,9 +4,13 @@ import backend.project.user.User;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "expenses")
 public class Expense {
@@ -31,8 +35,4 @@ public class Expense {
 
   @Column(name = "expense_date", nullable = false)
   private LocalDate expenseDate;
-
-  public Expense() {}
-
-  // Геттери і сеттери
 }

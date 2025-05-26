@@ -3,9 +3,13 @@ package backend.project.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "debt_payments")
 public class DebtPayment {
@@ -34,8 +38,4 @@ public class DebtPayment {
 
   @Column(columnDefinition = "TEXT")
   private String note;
-
-  public DebtPayment() {}
-
-  // Геттери і сеттери
 }

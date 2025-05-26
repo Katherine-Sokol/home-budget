@@ -1,2 +1,20 @@
-package backend.project.dto;public class IncomeDto {
+package backend.project.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class IncomeDto {
+  private Long id;
+  private Long userId;
+  private Long categoryId;
+  private BigDecimal amount;
+  private String description;
+  private LocalDate incomeDate;
 }

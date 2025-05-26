@@ -184,3 +184,7 @@ footer {
     gap: 10px;
   }
 }
+
+.container {
+  margin-top: 120px;
+}

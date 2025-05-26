@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SigninPage from "./pages/SigninPage";
+import BudgetPage from "./pages/BudgetPage";
 
 function App() {
   return (
@@ -20,8 +21,12 @@ function App() {
           element={<LoginPage></LoginPage>}
         ></Route>
         <Route
-          path="/api/register"
+          path="/register"
           element={<SigninPage></SigninPage>}
+        ></Route>
+        <Route
+          path="/budget"
+          element={<BudgetPage></BudgetPage>}
         ></Route>
       </Routes>
       <Footer></Footer>

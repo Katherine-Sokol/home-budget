@@ -6,9 +6,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "debts")
 public class Debt {
@@ -47,8 +51,6 @@ public class Debt {
   @OneToMany(mappedBy = "debt", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<DebtPayment> payments = new HashSet<>();
 
-  public Debt() {}
-
   public enum DebtType {
     GIVEN, TAKEN
   }
@@ -56,6 +58,4 @@ public class Debt {
   public enum DebtStatus {
     UNPAID, PAID
   }
-
-  // Геттери і сеттери
 }
