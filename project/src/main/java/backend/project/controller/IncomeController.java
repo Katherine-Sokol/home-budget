@@ -5,6 +5,10 @@ import backend.project.service.IncomeService;
 import backend.project.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,13 +23,27 @@ import java.util.List;
 @RequestMapping("/api/incomes")
 @RequiredArgsConstructor
 public class IncomeController {
-
+  private static final String DEFAULT_SORT_FIELD = "incomeDate";
+  private static final String DEFAULT_SORT_DIRECTION = "asc";
+  private static final String DEFAULT_LIMIT = "10";
+  private static final String DEFAULT_PAGE = "0";
   private final IncomeService incomeService;
 
   // 1. Get all incomes
   @GetMapping
-  public List<IncomeDto> getAllIncomes(@AuthenticationPrincipal User userDetails) {
-    return incomeService.getIncomesByUserId(userDetails.getId());
+  public Page<IncomeDto> getAllIncomes(@AuthenticationPrincipal User userDetails,
+                                       @RequestParam(defaultValue = DEFAULT_SORT_FIELD) String sortField,
+                                       @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION) String sortDir,
+                                       @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                                       @RequestParam(defaultValue = DEFAULT_LIMIT) int limit)
+  {
+    Sort sort = sortDir.equalsIgnoreCase(DEFAULT_SORT_DIRECTION) ?
+        Sort.by(sortField).ascending() :
+        Sort.by(sortField).descending();
+
+    Pageable pageable = PageRequest.of(page, limit, sort);
+
+    return incomeService.getIncomesByUserId(userDetails.getId(), pageable);
   }
 
   @PostMapping
@@ -45,30 +63,71 @@ public class IncomeController {
   // 2. Get income amounts by category
   @GetMapping("/by-category/{categoryId}")
   public List<IncomeDto> getAllIncomesByCategory(@PathVariable Long categoryId,
-                                                 @AuthenticationPrincipal User userDetails) {
-    return incomeService.getAllIncomesByCategory(userDetails.getId(), categoryId);
+                                                 @AuthenticationPrincipal User userDetails,
+                                                 @RequestParam(defaultValue = DEFAULT_SORT_FIELD) String sortField,
+                                                 @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION) String sortDir,
+                                                 @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                                                 @RequestParam(defaultValue = DEFAULT_LIMIT) int limit)
+  {
+    Sort sort = sortDir.equalsIgnoreCase(DEFAULT_SORT_DIRECTION) ?
+        Sort.by(sortField).ascending() :
+        Sort.by(sortField).descending();
+
+    Pageable pageable = PageRequest.of(page, limit, sort);
+
+    return incomeService.getAllIncomesByCategory(userDetails.getId(), categoryId, pageable);
   }
 
   // 3. Get incomes between two dates
   @GetMapping("/between-dates")
-  public List<IncomeDto> getIncomesBetweenDates(@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+  public Page<IncomeDto> getIncomesBetweenDates(@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
                                                 @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
-                                                @AuthenticationPrincipal User userDetails) {
-    return incomeService.getIncomesByUserIdBetweenDates(userDetails.getId(), start, end);
+                                                @AuthenticationPrincipal User userDetails,
+                                                @RequestParam(defaultValue = DEFAULT_SORT_FIELD) String sortField,
+                                                @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION) String sortDir,
+                                                @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                                                @RequestParam(defaultValue = DEFAULT_LIMIT) int limit)
+  {
+    Sort sort = sortDir.equalsIgnoreCase(DEFAULT_SORT_DIRECTION) ?
+        Sort.by(sortField).ascending() :
+        Sort.by(sortField).descending();
+
+    Pageable pageable = PageRequest.of(page, limit, sort);
+    return incomeService.getIncomesByUserIdBetweenDates(userDetails.getId(), start, end, pageable);
   }
 
   // 4. Get incomes by exact amount
   @GetMapping("/by-amount")
   public List<IncomeDto> getIncomesByExactAmount(@RequestParam BigDecimal amount,
-                                                 @AuthenticationPrincipal User userDetails) {
-    return incomeService.getIncomesByUserIdAndAmount(userDetails.getId(), amount);
+                                                 @AuthenticationPrincipal User userDetails,
+                                                 @RequestParam(defaultValue = DEFAULT_SORT_FIELD) String sortField,
+                                                 @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION) String sortDir,
+                                                 @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                                                 @RequestParam(defaultValue = DEFAULT_LIMIT) int limit)
+  {
+    Sort sort = sortDir.equalsIgnoreCase(DEFAULT_SORT_DIRECTION) ?
+        Sort.by(sortField).ascending() :
+        Sort.by(sortField).descending();
+
+    Pageable pageable = PageRequest.of(page, limit, sort);
+    return incomeService.getIncomesByUserIdAndAmount(userDetails.getId(), amount, pageable);
   }
 
   // 5. Get incomes in an amount range
   @GetMapping("/by-amount-range")
   public List<IncomeDto> getIncomesByAmountRange(@RequestParam BigDecimal from,
                                                  @RequestParam BigDecimal to,
-                                                 @AuthenticationPrincipal User userDetails) {
-    return incomeService.getIncomesByUserIdAndAmountBetween(userDetails.getId(), from, to);
+                                                 @AuthenticationPrincipal User userDetails,
+                                                 @RequestParam(defaultValue = DEFAULT_SORT_FIELD) String sortField,
+                                                 @RequestParam(defaultValue = DEFAULT_SORT_DIRECTION) String sortDir,
+                                                 @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                                                 @RequestParam(defaultValue = DEFAULT_LIMIT) int limit)
+  {
+    Sort sort = sortDir.equalsIgnoreCase(DEFAULT_SORT_DIRECTION) ?
+        Sort.by(sortField).ascending() :
+        Sort.by(sortField).descending();
+
+    Pageable pageable = PageRequest.of(page, limit, sort);
+    return incomeService.getIncomesByUserIdAndAmountBetween(userDetails.getId(), from, to, pageable);
   }
 }

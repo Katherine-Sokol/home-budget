@@ -26,7 +26,7 @@ public class ExpenseCategoryService {
   private final UserRepository userRepository;
 
   public List<ExpenseCategoryDto> getAll(Long userId) {
-    return categoryMapper.toDtoList(categoryRepository.findAllByUserId(userId));
+    return categoryMapper.toDtoList(categoryRepository.findAllByUserIdOrDefault(userId));
   }
 
   @Transactional

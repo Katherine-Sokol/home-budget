@@ -17,6 +17,8 @@ import backend.project.user.User;
 import backend.project.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,10 +33,9 @@ public class ExpenseService {
   private final ExpenseMapper expenseMapper;
   private final UserRepository userRepository;
 
-  @Transactional
-  public List<ExpenseDto> getByUserId(Long userId) {
-    return expenseRepository.findAllByUserId(userId)
-        .stream().map(expenseMapper::toDto).toList();
+  public Page<ExpenseDto> getByUserId(Long userId, Pageable pageable) {
+    Page<Expense> expenses = expenseRepository.findAllByUserId(userId, pageable);
+    return expenses.map(expenseMapper::toDto);
   }
 
   @Transactional
@@ -61,27 +62,23 @@ public class ExpenseService {
     expenseRepository.deleteById(id);
   }
 
-  @Transactional
-  public List<ExpenseDto> getByUserIdAndCategoryId(Long userId, Long categoryId) {
-    return expenseRepository.findAllByUserIdAndCategoryId(userId, categoryId)
-        .stream().map(expenseMapper::toDto).toList();
+  public List<ExpenseDto> getByUserIdAndCategoryId(Long userId, Long categoryId, Pageable pageable) {
+    Page<Expense> expenses = expenseRepository.findAllByUserIdAndCategoryId(userId, categoryId, pageable);
+    return expenses.getContent().stream().map(expenseMapper::toDto).toList();
   }
 
-  @Transactional
-  public List<ExpenseDto> getByUserIdAndDateRange(Long userId, LocalDate start, LocalDate end) {
-    return expenseRepository.findAllByUserIdAndExpenseDateBetween(userId, start, end)
-        .stream().map(expenseMapper::toDto).toList();
+  public Page<ExpenseDto> getByUserIdAndDateRange(Long userId, LocalDate start, LocalDate end, Pageable pageable) {
+    Page<Expense> expenses = expenseRepository.findAllByUserIdAndExpenseDateBetween(userId, start, end, pageable);
+    return expenses.map(expenseMapper::toDto);
   }
 
-  @Transactional
-  public List<ExpenseDto> getByUserIdAndAmount(Long userId, BigDecimal amount) {
-    return expenseRepository.findAllByUserIdAndAmount(userId, amount)
-        .stream().map(expenseMapper::toDto).toList();
+  public List<ExpenseDto> getByUserIdAndAmount(Long userId, BigDecimal amount, Pageable pageable) {
+    Page<Expense> expenses = expenseRepository.findAllByUserIdAndAmount(userId, amount, pageable);
+    return expenses.getContent().stream().map(expenseMapper::toDto).toList();
   }
 
-  @Transactional
-  public List<ExpenseDto> getByUserIdAndAmountBetween(Long userId, BigDecimal from, BigDecimal to) {
-    return expenseRepository.findAllByUserIdAndAmountBetween(userId, from, to)
-        .stream().map(expenseMapper::toDto).toList();
+  public List<ExpenseDto> getByUserIdAndAmountBetween(Long userId, BigDecimal from, BigDecimal to, Pageable pageable) {
+    Page<Expense> expenses = expenseRepository.findAllByUserIdAndAmountBetween(userId, from, to, pageable);
+    return expenses.getContent().stream().map(expenseMapper::toDto).toList();
   }
 }

@@ -1,6 +1,8 @@
 package backend.project.repository;
 
 import backend.project.entity.Expense;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
@@ -8,13 +10,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
-  List<Expense> findAllByUserId(Long userId);
+  Page<Expense> findAllByUserId(Long userId, Pageable pageable);
 
-  List<Expense> findAllByUserIdAndCategoryId(Long userId, Long categoryId);
+  Page<Expense> findAllByUserIdAndCategoryId(Long userId, Long categoryId, Pageable pageable);
 
-  List<Expense> findAllByUserIdAndExpenseDateBetween(Long userId, LocalDate start, LocalDate end);
+  Page<Expense> findAllByUserIdAndExpenseDateBetween(Long userId, LocalDate start, LocalDate end, Pageable pageable);
 
-  List<Expense> findAllByUserIdAndAmount(Long userId, BigDecimal amount);
+  Page<Expense> findAllByUserIdAndAmount(Long userId, BigDecimal amount, Pageable pageable);
 
-  List<Expense> findAllByUserIdAndAmountBetween(Long userId, BigDecimal from, BigDecimal to);
+  Page<Expense> findAllByUserIdAndAmountBetween(Long userId, BigDecimal from, BigDecimal to, Pageable pageable);
 }

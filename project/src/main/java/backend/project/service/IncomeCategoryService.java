@@ -27,7 +27,7 @@ public class IncomeCategoryService {
 
   @Transactional
   public List<IncomeCategoryDto> getAllCategories(Long userId) {
-    return categoryMapper.toDtoList(categoryRepository.findAllByUserId(userId));
+    return categoryMapper.toDtoList(categoryRepository.findAllByUserIdOrDefault(userId));
   }
 
   @Transactional

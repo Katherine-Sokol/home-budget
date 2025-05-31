@@ -17,12 +17,13 @@ import backend.project.user.User;
 import backend.project.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,11 +35,10 @@ public class IncomeService {
   private final UserRepository userRepository;
 
   // 1. Get all incomes by user ID
-  public List<IncomeDto> getIncomesByUserId(Long userId) {
-    return incomeRepository.findAllByUserId(userId)
-        .stream()
-        .map(incomeMapper::toDto)
-        .collect(Collectors.toList());
+  public Page<IncomeDto> getIncomesByUserId(Long userId, Pageable pageable) {
+    Page<Income> incomes = incomeRepository.findAllByUserId(userId, pageable);
+
+    return incomes.map(incomeMapper::toDto);
   }
 
   @Transactional
@@ -68,34 +68,25 @@ public class IncomeService {
 
 
   // 2. Get all income by user ID and category ID
-  public List<IncomeDto> getAllIncomesByCategory(Long userId, Long categoryId) {
-    return incomeRepository.findAllByUserIdAndCategoryId(userId, categoryId)
-        .stream()
-        .map(incomeMapper::toDto)
-        .collect(Collectors.toList());
+  public List<IncomeDto> getAllIncomesByCategory(Long userId, Long categoryId, Pageable pageable) {
+    Page<Income> incomes = incomeRepository.findAllByUserIdAndCategoryId(userId, categoryId, pageable);
+    return incomes.getContent().stream().map(incomeMapper::toDto).toList();
   }
 
   // 3. Get all incomes by user ID and date range
-  public List<IncomeDto> getIncomesByUserIdBetweenDates(Long userId, LocalDate start, LocalDate end) {
-    return incomeRepository.findAllByUserIdAndIncomeDateBetween(userId, start, end)
-        .stream()
-        .map(incomeMapper::toDto)
-        .collect(Collectors.toList());
+  public Page<IncomeDto> getIncomesByUserIdBetweenDates(Long userId, LocalDate start, LocalDate end, Pageable pageable) {
+    Page<Income> incomes = incomeRepository.findAllByUserIdAndIncomeDateBetween(userId, start, end, pageable);
+    return incomes.map(incomeMapper::toDto);
   }
 
   // 4. Get all incomes by user ID and exact amount
-  public List<IncomeDto> getIncomesByUserIdAndAmount(Long userId, BigDecimal amount) {
-    return incomeRepository.findAllByUserIdAndAmount(userId, amount)
-        .stream()
-        .map(incomeMapper::toDto)
-        .collect(Collectors.toList());
+  public List<IncomeDto> getIncomesByUserIdAndAmount(Long userId, BigDecimal amount, Pageable pageable) {
+    Page<Income> incomes = incomeRepository.findAllByUserIdAndAmount(userId, amount, pageable);
+    return incomes.getContent().stream().map(incomeMapper::toDto).toList();
   }
-
   // 5. Get all incomes by user ID and amount range
-  public List<IncomeDto> getIncomesByUserIdAndAmountBetween(Long userId, BigDecimal from, BigDecimal to) {
-    return incomeRepository.findAllByUserIdAndAmountBetween(userId, from, to)
-        .stream()
-        .map(incomeMapper::toDto)
-        .collect(Collectors.toList());
+  public List<IncomeDto> getIncomesByUserIdAndAmountBetween(Long userId, BigDecimal from, BigDecimal to, Pageable pageable) {
+    Page<Income> incomes = incomeRepository.findAllByUserIdAndAmountBetween(userId, from, to, pageable);
+    return incomes.getContent().stream().map(incomeMapper::toDto).toList();
   }
 }
