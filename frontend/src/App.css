@@ -15,20 +15,15 @@
 
 body {
   font-family: "Noto Sans", sans-serif;
+  font-size: 16px;
   background-color: var(--background-color-light);
   color: #1f2937;
   line-height: 1.6;
+  margin-top: 4.75rem;
 }
-
-header {
-  position: fixed;
-  top: 0;
-  z-index: 100;
-  width: 100%;
-  background-color: var(--main-color);
+a {
+  text-decoration: none;
   color: white;
-  padding: 20px 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .submit-button {
@@ -40,33 +35,6 @@ header {
 .submit-button:hover {
   color: white;
   background-color: var(--main-color-dark);
-}
-
-.nav-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-}
-
-.logo {
-  display: flex;
-  font-size: 22px;
-  font-weight: 800;
-}
-
-nav a {
-  color: white;
-  margin-left: 20px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity 0.3s;
-}
-
-nav a:hover {
-  opacity: 0.8;
 }
 
 .hero {
@@ -84,8 +52,10 @@ nav a:hover {
 }
 
 .hero h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
+  max-width: 50rem;
+  font-size: 3rem;
+  margin-bottom: 1.25rem;
+  font-weight: 800;
   color: var(--main-color-dark);
 }
 
@@ -131,7 +101,7 @@ nav a:hover {
 
 .cta {
   text-align: center;
-  margin: 40px 0 100px;
+  margin: 2.5rem 0;
 }
 
 .cta a {
@@ -151,9 +121,6 @@ nav a:hover {
 }
 
 footer {
-  position: fixed;
-  bottom: 0;
-  z-index: 100;
   width: 100%;
   background-color: var(--background-color-dark);
   text-align: center;
@@ -174,17 +141,10 @@ footer {
 }
 
 @media (max-width: 600px) {
+  .hero{
+    padding: 0 2rem;
+  }
   .hero h1 {
-    font-size: 28px;
+    font-size: 2rem;
   }
-
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-}
-
-.container {
-  margin-top: 120px;
 }

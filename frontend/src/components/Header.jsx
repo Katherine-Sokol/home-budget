@@ -2,28 +2,50 @@ import React from "react";
 import { useState, useEffect } from "react";
 import HeaderNav from "./HeaderNav";
 import UserNav from "./UserNav";
-
+import { useAuth } from "../context/AuthContext";
+import "./Header.css";
 function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const handleToggleMenu = (e) => {
+    e.stopPropagation();
+    setMenuOpen((prev) => !prev);
+  };
 
-  useEffect(() => {
-    // Проверка, есть ли токен
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
+  const handleCloseMenu = (e) => {
+    setMenuOpen(false);
+  };
   return (
     <header>
       <div className="nav-container">
-        <div className="logo">
+        <a
+          href="/"
+          className="logo"
+        >
           <img
-            src="../../public/logo.png"
+            src="./logo.png"
             alt="logo"
             width="52px"
             height="52px"
           />
           <h2>Домашній Бюджет</h2>
-        </div>
-        {isLoggedIn ? <UserNav /> : <HeaderNav />}
+        </a>{" "}
+        <button
+          className="burger"
+          onClick={handleToggleMenu}
+        >
+          ☰
+        </button>
+        <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
+          {isLoggedIn ? (
+            <UserNav
+              onLogout={logout}
+              onLinkClick={handleCloseMenu}
+            />
+          ) : (
+            <HeaderNav onLinkClick={handleCloseMenu} />
+          )}
+        </nav>
       </div>
     </header>
   );

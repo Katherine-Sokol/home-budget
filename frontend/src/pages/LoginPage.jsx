@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function LoginPage(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +24,8 @@ function LoginPage(props) {
 
     if (response.ok) {
       // можно сохранить токен в localStorage/cookies
-      localStorage.setItem("token", data.token);
+      // localStorage.setItem("token", data.token);
+      login(data.token);
       navigate("/budget"); // Перенаправляем на защищённую страницу
     } else {
       alert(data.message || "Помилка входу");
@@ -33,7 +36,7 @@ function LoginPage(props) {
     <>
       <main className="d-flex align-items-center py-4 body-container">
         <div className="form-signin w-100 m-auto">
-          <form>
+          <form onSubmit={handleSubmit}>
             <h1 className="h3 mb-3 fw-normal text-center">Форма входу</h1>
             <div className="form-floating">
               <input
@@ -60,7 +63,6 @@ function LoginPage(props) {
             <button
               className="btn w-100 py-2 submit-button"
               type="submit"
-              onSubmit={handleSubmit}
             >
               Увійти
             </button>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Element } from "react-scroll";
-import FeaturesComponent from "./FeaturesComponent";
+import FeaturesComponent from "../components/FeaturesComponent";
 
 function HomePage(props) {
   return (
@@ -21,8 +21,8 @@ function HomePage(props) {
 
       {/* <!-- Call to Action --> */}
       <div className="cta">
-        <a href="/api/register">Зареєструватися</a>
-        <a href="/api/login">Увійти</a>
+        <a href="/register">Зареєструватися</a>
+        <a href="/login">Увійти</a>
       </div>
     </>
   );

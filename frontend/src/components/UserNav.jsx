@@ -1,36 +1,54 @@
-import React from 'react';
-import { Link } from "react-router-dom";
-import { Link as ScrollLink } from "react-scroll";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-function UserNav(props) {
-    return (
-      <nav>
-        <Link
-          className="me-3 py-2 text-light text-decoration-none"
-          to="/api/incomes"
-        >
-          Мої доходи
-        </Link>
-        <Link
-          className="me-3 py-2 text-light text-decoration-none"
-          to="/api/expenses"
-        >
-          Мої витрати
-        </Link>
-        <Link
-          className="me-3 py-2 text-light text-decoration-none"
-          to="/api/analytics"
-        >
-          Аналітика
-        </Link>
-        <Link
-          className="me-3 py-2 text-light text-decoration-none"
-          to="/api/logout"
-        >
-          Вийти
-        </Link>
-      </nav>
-    );
+function UserNav({ onLogout, onLinkClick }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    onLogout(); // Сигнал родителю, что пользователь вышел
+    navigate("/");
+    onLinkClick?.();
+  };
+  return (
+    <>
+      <Link
+        className="text-light text-decoration-none"
+        to="/"
+        onClick={onLinkClick}
+      >
+        Головна
+      </Link>
+      <Link
+        className="text-light text-decoration-none"
+        to="/budget"
+        onClick={onLinkClick}
+      >
+        Мій кабінет
+      </Link>
+      <Link
+        className="text-light text-decoration-none"
+        to="/incomes"
+        onClick={onLinkClick}
+      >
+        Мої доходи
+      </Link>
+      <Link
+        className="text-light text-decoration-none"
+        to="/expenses"
+        onClick={onLinkClick}
+      >
+        Мої витрати
+      </Link>
+      <span
+        className="text-light text-decoration-none"
+        style={{ cursor: "pointer" }}
+        onClick={handleLogout}
+      >
+        Вийти
+      </span>
+    </>
+  );
 }
 
 export default UserNav;

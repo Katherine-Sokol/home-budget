@@ -1,64 +1,122 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./BudgetPage.css";
+import LastTransactionsTable from "../components/LastTransactionsTable";
 
 function BudgetPage(props) {
-  // const [data, setData] = useState(null);
+  const [incomes, setIncomes] = useState([]);
+  const [expenses, setExpenses] = useState([]);
+  const [balance, setBalance] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    fetch("http://localhost:8080/api/budget", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then(async (res) => {
-      if (res.ok) {
-        const result = await res.json();
-        setData(result);
-      } else {
-        console.error("Ошибка доступа: ", res.status);
+    const fetchData = async () => {
+      try {
+        const [incomesRes, expensesRes] = await Promise.all([
+          fetch("http://localhost:8080/api/incomes", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+          fetch("http://localhost:8080/api/expenses", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+        ]);
+
+        if (!incomesRes.ok || !expensesRes.ok) {
+          console.error("Помилка при отриманні даних");
+          return;
+        }
+
+        const incomesData = await incomesRes.json();
+        const expensesData = await expensesRes.json();
+
+        setIncomes(incomesData.content || []);
+        setExpenses(expensesData.content || []);
+
+        const totalIncome = incomesData.content.reduce(
+          (sum, i) => sum + Number(i.amount),
+          0
+        );
+        const totalExpense = expensesData.content.reduce(
+          (sum, e) => sum + Number(e.amount),
+          0
+        );
+        setBalance(totalIncome - totalExpense);
+      } catch (error) {
+        console.error("Помилка запиту: ", error);
       }
-    });
+    };
+
+    fetchData();
   }, []);
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("uk-UA");
+  };
+
+  const MAX_ROWS = 5;
+
+  const recentIncomes = [
+    ...[...incomes]
+      .sort((a, b) => new Date(b.incomeDate) - new Date(a.incomeDate))
+      .slice(0, MAX_ROWS),
+    ...Array.from(
+      { length: Math.max(0, MAX_ROWS - incomes.length) },
+      (_, i) => ({
+        id: `empty-income-${i}`,
+        incomeDate: "",
+        description: "",
+        amount: "",
+      })
+    ),
+  ];
+
+  const recentExpenses = [
+    ...[...expenses]
+      .sort((a, b) => new Date(b.expenseDate) - new Date(a.expenseDate))
+      .slice(0, MAX_ROWS),
+    ...Array.from(
+      { length: Math.max(0, MAX_ROWS - expenses.length) },
+      (_, i) => ({
+        id: `empty-expense-${i}`,
+        incomeDate: "",
+        description: "",
+        amount: "",
+      })
+    ),
+  ];
+
   return (
     <>
+      <div className="container text-center p-3">
+        <div className="row align-items-center balance-info mx-1">
+          <div className="col">Поточний баланс: {balance.toFixed(2)} грн</div>
+        </div>
+      </div>
       <div className="container">
-        <div className="row">Поточний баланс: </div>
-        <div className="row">
-          <div className="col-sm-6 mb-3 mb-sm-0">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Останні доходи</h5>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item">An item</li>
-                  <li class="list-group-item">A second item</li>
-                </ul>
-                <a
-                  href="#"
-                  className="btn btn-primary"
-                >
-                  Додати транзакцію
-                </a>
-              </div>
-            </div>
+        <div className="row g-3">
+          <div className="col-lg-6">
+            <LastTransactionsTable
+              title="Останні доходи"
+              transactions={recentIncomes}
+              type="income"
+              onAddClick={() => navigate("/add-income")}
+            />
           </div>
-          <div className="col-sm-6">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Останні витрати</h5>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item">An item</li>
-                  <li class="list-group-item">A second item</li>
-                </ul>
-                <a
-                  href="#"
-                  className="btn btn-primary"
-                >
-                  Додати транзакцію
-                </a>
-              </div>
-            </div>
+          <div className="col-lg-6">
+            <LastTransactionsTable
+              title="Останні витрати"
+              transactions={recentExpenses}
+              type="expense"
+              onAddClick={() => navigate("/add-expense")}
+            />
           </div>
         </div>
       </div>

@@ -1,0 +1,29 @@
+@import "../App.css";
+
+.transaction-card {
+  background-color: var(--background-color-dark);
+}
+
+.transaction-table {
+  border: 2px solid var(--main-color);
+  background-color: var(--background-color-light);
+  color: var(--main-color-dark);
+}
+
+.transaction-table tbody tr {
+  height: 43px;
+}
+
+.balance-info {
+  border: 1px solid var(--main-color);
+  border-radius: 6px;
+  background-color: var( --background-color-dark);
+  color: var(--main-color-dark);
+  font-size: 36px;
+}
+
+@media (max-width: 600px){
+  .transaction-table{
+    font-size: 0.75rem;
+  }
+}

@@ -1,0 +1,44 @@
+@import "../App.css";
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+  
+  .page-item {
+    display: inline;
+  }
+  
+  .page-link {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--main-color);
+    background-color: white;
+    color: var(--main-color-dark);
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .page-link:hover:not(:disabled) {
+    background-color: var(--main-color);
+    color: white;
+  }
+  
+  .page-item.active .page-link {
+    background-color: var(--main-color);
+    color: white;
+    font-weight: bold;
+  }
+  
+  .page-item.disabled .page-link {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+  }
