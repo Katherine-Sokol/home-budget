@@ -1,9 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import HeaderNav from "./HeaderNav";
 import UserNav from "./UserNav";
 import { useAuth } from "../context/AuthContext";
 import "./Header.css";
+
 function Header() {
   const { isLoggedIn, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);

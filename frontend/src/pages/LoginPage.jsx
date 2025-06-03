@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-function LoginPage(props) {
+function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ function LoginPage(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:8080/api/login", {
+    const response = await fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,10 +23,8 @@ function LoginPage(props) {
     const data = await response.json();
 
     if (response.ok) {
-      // можно сохранить токен в localStorage/cookies
-      // localStorage.setItem("token", data.token);
       login(data.token);
-      navigate("/budget"); // Перенаправляем на защищённую страницу
+      navigate("/budget"); 
     } else {
       alert(data.message || "Помилка входу");
     }

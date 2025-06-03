@@ -48,7 +48,7 @@ function AddExpensePage() {
     e.preventDefault();
     const token = localStorage.getItem("token");
 
-    const response = await fetch("http://localhost:8080/api/expenses", {
+    const response = await fetch("/api/expenses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

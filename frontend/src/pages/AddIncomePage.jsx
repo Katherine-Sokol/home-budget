@@ -22,7 +22,7 @@ function AddIncomePage() {
       return;
     }
 
-    fetch("http://localhost:8080/api/income-categories", {
+    fetch("/api/income-categories", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -48,7 +48,7 @@ function AddIncomePage() {
     e.preventDefault();
     const token = localStorage.getItem("token");
 
-    const response = await fetch("http://localhost:8080/api/incomes", {
+    const response = await fetch("/api/incomes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -3,11 +3,9 @@ import TransactionTable from "./TransactionTable";
 import Pagination from "./Pagination";
 import TransactionPieChart from "./TransactionPieChart";
 import DateFilter from "./DateFilter";
-import { Spinner } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 
 function TransactionPage({
-  type, // 'incomes' or 'expenses'
   apiBasePath,
   categoryPath,
   dateField,
@@ -50,14 +48,14 @@ function TransactionPage({
       try {
         const [mainRes, categoriesRes] = await Promise.all([
           fetch(
-            `http://localhost:8080/api/${apiBasePath}${
+            `/api/${apiBasePath}${
               hasDateFilter ? "/between-dates" : ""
             }?${params.toString()}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
           ),
-          fetch(`http://localhost:8080/api/${categoryPath}`, {
+          fetch(`/api/${categoryPath}`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -80,7 +78,7 @@ function TransactionPage({
 
   const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
-    await fetch(`http://localhost:8080/api/${apiBasePath}/${id}`, {
+    await fetch(`/api/${apiBasePath}/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

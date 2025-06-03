@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-function SigninPage(props) {
+function SigninPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ function SigninPage(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:8080/api/register", {
+    const response = await fetch("/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,9 +23,8 @@ function SigninPage(props) {
     const data = await response.json();
 
     if (response.ok) {
-      // можно сохранить токен в localStorage/cookies
       login(data.token); 
-      navigate("/budget"); // Перенаправляем на защищённую страницу
+      navigate("/budget"); 
     } else {
       alert(data.message || "Помилка реєстрації");
     }

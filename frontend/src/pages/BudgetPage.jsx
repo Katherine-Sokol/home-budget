@@ -16,12 +16,12 @@ function BudgetPage(props) {
     const fetchData = async () => {
       try {
         const [incomesRes, expensesRes] = await Promise.all([
-          fetch("http://localhost:8080/api/incomes", {
+          fetch("/api/incomes", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
-          fetch("http://localhost:8080/api/expenses", {
+          fetch("/api/expenses", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
