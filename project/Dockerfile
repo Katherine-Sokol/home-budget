@@ -7,6 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Будуємо JAR-файл
+RUN chmod +x gradlew
 RUN ./gradlew build --no-daemon
 
 # Запускаємо застосунок
