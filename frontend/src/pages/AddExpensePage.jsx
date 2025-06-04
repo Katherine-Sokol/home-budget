@@ -65,7 +65,7 @@ function AddExpensePage() {
     });
 
     if (response.ok) {
-      alert("Дохід успішно додано!");
+      alert("Витрату успішно додано!");
       navigate("/budget");
     } else {
       alert("Помилка при збереженні доходу");

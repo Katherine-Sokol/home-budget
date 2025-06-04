@@ -24,7 +24,7 @@ function Header() {
           className="logo"
         >
           <img
-            src="./logo.png"
+            src="../../public/logo.png"
             alt="logo"
             width="52px"
             height="52px"
