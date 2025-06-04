@@ -1,8 +1,8 @@
 # Етап 1: Збірка Spring Boot застосунку
 FROM gradle:7.6.0-jdk17 AS builder
 WORKDIR /app
-COPY . .                             # все з `project/` копіюється у /app
-RUN gradle build --no-daemon        # збираємо JAR
+COPY . .
+RUN gradle build --no-daemon
 
 # Етап 2: Запуск
 FROM openjdk:17-jdk-slim
