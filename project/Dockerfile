@@ -2,7 +2,7 @@
 FROM gradle:7.6.0-jdk17 AS builder
 WORKDIR /app
 COPY . .
-RUN gradle build --no-daemon
+RUN ./gradlew build --no-daemon
 
 # Етап 2: Запуск
 FROM openjdk:17-jdk-slim
