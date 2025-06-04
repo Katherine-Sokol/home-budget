@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TransactionForm from "../components/TransactionForm";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function AddExpensePage() {
   const [categories, setCategories] = useState([]);
   const [form, setForm] = useState({
@@ -22,7 +24,7 @@ function AddExpensePage() {
       return;
     }
 
-    fetch("http://localhost:8080/api/expense-categories", {
+    fetch(`${API_URL}/expense-categories`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -48,7 +50,7 @@ function AddExpensePage() {
     e.preventDefault();
     const token = localStorage.getItem("token");
 
-    const response = await fetch("/api/expenses", {
+    const response = await fetch(`${API_URL}/expenses`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

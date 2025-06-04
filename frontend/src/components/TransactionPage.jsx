@@ -5,6 +5,8 @@ import TransactionPieChart from "./TransactionPieChart";
 import DateFilter from "./DateFilter";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function TransactionPage({
   apiBasePath,
   categoryPath,
@@ -48,14 +50,14 @@ function TransactionPage({
       try {
         const [mainRes, categoriesRes] = await Promise.all([
           fetch(
-            `/api/${apiBasePath}${
+            `${API_URL}/${apiBasePath}${
               hasDateFilter ? "/between-dates" : ""
             }?${params.toString()}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
           ),
-          fetch(`/api/${categoryPath}`, {
+          fetch(`${API_URL}/${categoryPath}`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -78,7 +80,7 @@ function TransactionPage({
 
   const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
-    await fetch(`/api/${apiBasePath}/${id}`, {
+    await fetch(`${API_URL}/${apiBasePath}/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

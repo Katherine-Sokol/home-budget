@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import "./BudgetPage.css";
 import LastTransactionsTable from "../components/LastTransactionsTable";
 
-function BudgetPage(props) {
+const API_URL = import.meta.env.VITE_API_URL;
+
+function BudgetPage() {
   const [incomes, setIncomes] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [balance, setBalance] = useState(0);
@@ -16,12 +18,12 @@ function BudgetPage(props) {
     const fetchData = async () => {
       try {
         const [incomesRes, expensesRes] = await Promise.all([
-          fetch("/api/incomes", {
+          fetch(`${API_URL}/incomes`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
-          fetch("/api/expenses", {
+          fetch(`${API_URL}/expenses`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
