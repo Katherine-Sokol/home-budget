@@ -80,6 +80,8 @@ function BudgetPage() {
     ),
   ];
 
+  console.log(expenses);
+
   const recentExpenses = [
     ...[...expenses]
       .sort((a, b) => new Date(b.expenseDate) - new Date(a.expenseDate))
