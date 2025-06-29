@@ -5,6 +5,7 @@ import "./BudgetPage.css";
 import LastTransactionsTable from "../components/LastTransactionsTable";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const MAX_ROWS = 5;
 
 function BudgetPage() {
   const [incomes, setIncomes] = useState([]);
@@ -68,8 +69,6 @@ function BudgetPage() {
     const date = new Date(dateStr);
     return date.toLocaleDateString("uk-UA");
   };
-
-  const MAX_ROWS = 5;
 
   const recentIncomes = [
     ...[...incomes]
