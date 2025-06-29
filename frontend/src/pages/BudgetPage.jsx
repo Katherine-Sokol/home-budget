@@ -17,6 +17,7 @@ function BudgetPage() {
     const token = localStorage.getItem("token");
 
     const fetchData = async () => {
+      console.log(MAX_ROWS);
       try {
         const [incomesRes, expensesRes] = await Promise.all([
           fetch(
