@@ -71,9 +71,7 @@ function BudgetPage() {
   };
 
   const recentIncomes = [
-    ...[...incomes]
-      .sort((a, b) => new Date(b.incomeDate) - new Date(a.incomeDate))
-      .slice(0, MAX_ROWS),
+    ...incomes,
     ...Array.from(
       { length: Math.max(0, MAX_ROWS - incomes.length) },
       (_, i) => ({
@@ -88,9 +86,7 @@ function BudgetPage() {
   console.log(expenses);
 
   const recentExpenses = [
-    ...[...expenses]
-      .sort((a, b) => new Date(b.expenseDate) - new Date(a.expenseDate))
-      .slice(0, MAX_ROWS),
+    ...expenses,
     ...Array.from(
       { length: Math.max(0, MAX_ROWS - expenses.length) },
       (_, i) => ({
