@@ -18,16 +18,22 @@ function BudgetPage() {
     const fetchData = async () => {
       try {
         const [incomesRes, expensesRes] = await Promise.all([
-          fetch(`${API_URL}/incomes`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
-          fetch(`${API_URL}/expenses`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
+          fetch(
+            `${API_URL}/incomes?sortField=incomeDate&sortDir=desc&page=0&limit=${MAX_ROWS}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ),
+          fetch(
+            `${API_URL}/expenses?sortField=expenseDate&sortDir=desc&page=0&limit=${MAX_ROWS}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          ),
         ]);
 
         if (!incomesRes.ok || !expensesRes.ok) {
