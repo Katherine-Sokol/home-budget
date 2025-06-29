@@ -1,8 +1,12 @@
 import React from "react";
 import { Element } from "react-scroll";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import FeaturesComponent from "../components/FeaturesComponent";
 
 function HomePage() {
+  const { isLoggedIn } = useAuth();
+
   return (
     <>
       <section className="hero">
@@ -17,10 +21,12 @@ function HomePage() {
         <FeaturesComponent></FeaturesComponent>
       </Element>
 
-      <div className="cta">
-        <a href="/register">Зареєструватися</a>
-        <a href="/login">Увійти</a>
-      </div>
+      {!isLoggedIn && (
+        <div className="cta">
+          <Link to="/register">Зареєструватися</Link>
+          <Link to="/login">Увійти</Link>
+        </div>
+      )}
     </>
   );
 }

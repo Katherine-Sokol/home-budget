@@ -88,7 +88,7 @@ function BudgetPage() {
       { length: Math.max(0, MAX_ROWS - expenses.length) },
       (_, i) => ({
         id: `empty-expense-${i}`,
-        incomeDate: "",
+        expenseDate: "",
         description: "",
         amount: "",
       })
