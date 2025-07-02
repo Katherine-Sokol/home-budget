@@ -8,7 +8,7 @@ function Modal({ message, onClose }) {
       <div className="modal-box">
         <p>{message}</p>
         <button
-          className="submit-button"
+          className="btn submit-button"
           onClick={onClose}
         >
           OK
