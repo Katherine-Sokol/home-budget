@@ -7,7 +7,12 @@ function Modal({ message, onClose }) {
     <div className="modal-backdrop">
       <div className="modal-box">
         <p>{message}</p>
-        <button onClick={onClose}>OK</button>
+        <button
+          className="submit-button"
+          onClick={onClose}
+        >
+          OK
+        </button>
       </div>
     </div>
   );
