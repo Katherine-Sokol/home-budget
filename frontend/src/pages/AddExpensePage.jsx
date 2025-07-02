@@ -79,7 +79,7 @@ function AddExpensePage() {
       navigate("/budget");
     }
   };
-
+  console.log("modalMessage:", modalMessage);
   return (
     <>
       <TransactionForm
