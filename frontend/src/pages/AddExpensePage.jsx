@@ -67,6 +67,7 @@ function AddExpensePage() {
     });
 
     if (response.ok) {
+      console.log("Успішна відповідь, встановлюємо модальне повідомлення");
       setModalMessage("Витрату успішно додано!");
     } else {
       setModalMessage("Помилка при збереженні витрати");

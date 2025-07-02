@@ -2,6 +2,7 @@ import React from "react";
 import "./Modal.css";
 
 function Modal({ message, onClose }) {
+  console.log("Modal component rendered with message:", message);
   return (
     <div className="modal-backdrop">
       <div className="modal-box">
