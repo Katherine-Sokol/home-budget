@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TransactionForm from "../components/TransactionForm";
+import Modal from "../components/Modal";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function AddExpensePage() {
+  const [modalMessage, setModalMessage] = useState(null);
   const [categories, setCategories] = useState([]);
   const [form, setForm] = useState({
     categoryId: "",
@@ -65,21 +67,35 @@ function AddExpensePage() {
     });
 
     if (response.ok) {
-      alert("Витрату успішно додано!");
-      navigate("/budget");
+      setModalMessage("Витрату успішно додано!");
     } else {
-      alert("Помилка при збереженні доходу");
+      setModalMessage("Помилка при збереженні витрати");
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalMessage(null);
+    if (form.amount && form.categoryId) {
+      navigate("/budget");
     }
   };
 
   return (
-    <TransactionForm
-      type="expense"
-      form={form}
-      handleChange={handleChange}
-      handleSubmit={handleSubmit}
-      categories={categories}
-    />
+    <>
+      <TransactionForm
+        type="expense"
+        form={form}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        categories={categories}
+      />
+      {modalMessage && (
+        <Modal
+          message={modalMessage}
+          onClose={handleCloseModal}
+        />
+      )}
+    </>
   );
 }
 
