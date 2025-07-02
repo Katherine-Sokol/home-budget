@@ -67,9 +67,9 @@ function AddIncomePage() {
     });
 
     if (response.ok) {
-      setModalMessage("Витрату успішно додано!");
+      setModalMessage("Дохід успішно додано!");
     } else {
-      setModalMessage("Помилка при збереженні витрати");
+      setModalMessage("Помилка при збереженні доходу");
     }
   };
   const handleCloseModal = () => {
